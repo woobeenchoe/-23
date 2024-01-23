@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>트레이더 업무 사이트 </title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+
+        nav {
+            background-color: #555;
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 10px;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #clock {
+            font-size: 2em;
+            margin-top: 20px;
+            color: #fff;
+            background-color: #333;
+            border-radius: 50%;
+            padding: 20px;
+            display: inline-block;
+            font-family: 'Roboto', sans-serif;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1> 트레이더 전용  </h1>
+    </header>
+
+    <nav>
+        <a href="https://www.youtube.com/ "target="_blank">유튜브</a>
+        <a href="https://kr.tradingview.com/chart/iAWoz3Y4/?symbol=BITSTAMP%3ABTCUSD" target="_blank">트레이딩뷰</a>
+        <a href="https://kr.investing.com/economic-calendar/"target="_blank">인베스팅</a>
+        <a href="https://ibportal.infinox.com/ibaccounts"target="_blank">인피녹스</a>
+    </nav>
+
+    <section>
+        <h2>리딩을 시작해보자 시발 </h2>
+        <p> 현재 시간 아래 </p>
+        <div id="clock"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 리딩준비물</p>
+    </footer>
+
+    <script>
+        function updateClock() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            // 시, 분, 초를 두 자리 숫자로 표시하도록 포맷팅
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            var timeString = hours + ':' + minutes + ':' + seconds;
+
+            document.getElementById('clock').innerHTML = timeString;
+        }
+
+        // 1초마다 updateClock 함수를 호출하여 시간을 업데이트
+        setInterval(updateClock, 1000);
+
+        // 초기 로딩 시에도 시간을 표시하기 위해 한 번 호출
+        updateClock();
+    </script>
+</body>
+
+<section>
+    <label for="numbers">단가입력해 씨발 (쉼표로 구분한다):</label>
+    <input type="text" id="numbers" placeholder="예: 2030.10, 2033.10, 2035.10">
+
+    <button onclick="calculateAverage()">평균 값 계산</button>
+
+    <p id="result">평균단가 는 ? </p>
+</section>
+
+<footer>
+    <p>&copy; 2024 리딩 준비물 (장지수 말안들어) </p>
+</footer>
+
+<script>
+    function calculateAverage() {
+        const numbersInput = document.getElementById('numbers');
+        const resultParagraph = document.getElementById('result');
+
+        // 입력값을 쉼표로 분리하여 배열로 변환
+        const numbersArray = numbersInput.value.split(',').map(Number);
+
+        // 배열의 평균 계산
+        const average = calculateArrayAverage(numbersArray);
+
+        // 계산 결과를 화면에 표시
+        resultParagraph.textContent = isNaN(average) ? '숫자를 올바르게 입력하세요.' : `평균 값: ${average.toFixed(2)}`;
+    }
+
+    function calculateArrayAverage(arr) {
+        // 배열이 비어있을 경우 NaN 반환
+        if (arr.length === 0) {
+            return NaN;
+        }
+
+        // 배열의 합계 계산
+        const sum = arr.reduce((acc, num) => acc + num, 0);
+
+        // 평균 값 계산
+        const average = sum / arr.length;
+
+        return average;
+    }
+</script>
+</html>
