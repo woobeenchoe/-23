@@ -151,4 +151,65 @@
         return average;
     }
 </script>
+    </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>금 차트</title>
+    <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js"></script>
+</head>
+<body>
+    <div id="gold-chart-container"></div>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+        // 여기에 앞서 발급받은 Alpha Vantage API 키를 넣어주세요
+        const alphaVantageApiKey = 'YOUR_ALPHA_VANTAGE_API_KEY';
+
+        // Alpha Vantage API에서 금 차트 데이터 가져오기
+        async function getGoldChartData() {
+            const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=XAUUSD&apikey=${alphaVantageApiKey}`);
+            const data = await response.json();
+            const timeSeriesData = data['Time Series (Daily)'];
+
+            const chartData = [];
+            for (const date in timeSeriesData) {
+                chartData.push({
+                    x: new Date(date).getTime(),
+                    y: parseFloat(timeSeriesData[date]['4. close'])
+                });
+            }
+
+            return chartData;
+        }
+
+        // 금 차트 그리기
+        async function drawGoldChart() {
+            const goldChartData = await getGoldChartData();
+
+            Highcharts.chart('gold-chart-container', {
+                title: {
+                    text: '금 가격 차트'
+                },
+                xAxis: {
+                    type: 'datetime'
+                },
+                yAxis: {
+                    title: {
+                        text: '금 가격 (USD)'
+                    }
+                },
+                series: [{
+                    name: '금 가격',
+                    data: goldChartData
+                }]
+            });
+        }
+
+        // 차트 그리기 함수 호출
+        drawGoldChart();
+    </script>
 </html>
